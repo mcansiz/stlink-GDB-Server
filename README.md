@@ -7,6 +7,8 @@ Bu proje ST-LINK debugger cihazınıza TCP/IP üzerinden ulaşarak debug yapman�
 
 ### Topoloji
 ![Alt text](https://i.hizliresim.com/715vw2p.png "a title")
+
+![alt text](https://github.com/mcansiz/stlink-GDB-Server/blob/main/topoloji.jpg?raw=true)
  
 Proje 2 kısımdan oluşur:
 ### 1.  ST-LINK Server Uygulaması
