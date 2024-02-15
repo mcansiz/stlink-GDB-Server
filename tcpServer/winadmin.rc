@@ -1,0 +1,5 @@
+#include <windows.h>
+ 
+ID_ICON    ICON    DISCARDABLE    "icn.ico"
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "winadmin.exe.manifest"
