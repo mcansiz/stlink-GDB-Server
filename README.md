@@ -44,5 +44,5 @@ Stm32cubeide uygulamanın debug ayarlarında  sırası ile ;
 ![alt text](https://github.com/mcansiz/stlink-GDB-Server/blob/main/client.jpg?raw=true)
 
 ###  3. Internet IP adresi ile bağlanmak
- Server PC ip adresi statiğe çevrilmesi vey DDNS alınmalı ve server için port yönlendirilmesi yapılmalı.
-alternatif olarak  serve ve client bilgisayarlarında RADMIN VPN kullanarak bağlanabilirsiniz.
+ Server PC ip adresi statiğe çevrilmeli, DDNS alınmalı ve server için port yönlendirilmesi yapılmalı.
+Alternatif olarak  server ve client bilgisayarlarında RADMIN VPN kullanarak bağlanabilirsiniz.
