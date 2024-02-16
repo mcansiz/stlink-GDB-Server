@@ -58,7 +58,6 @@ void MainWindow::on_openServer_clicked()
 
         _server->close();
 
-
         clientConnectedSate(connectedState_e::disconnected);
 
     } else {
@@ -86,7 +85,6 @@ void MainWindow::send_msg(QTcpSocket *socketHandle, uint8_t id, uint8_t *msg, ui
     socketHandle->waitForBytesWritten();
 
     wait(100);
-
 }
 
 void MainWindow::clientConnectedSate(connectedState_e status)
@@ -101,13 +99,13 @@ void MainWindow::clientConnectedSate(connectedState_e status)
         connectStatus->setText("Close Server ");
         ui->consol->append("> Close Server");
         ui->openServer->setText("Open");
-         disconnect(_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+        disconnect(_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
 
     } else if (status == connectedState_e::connect_error) {
         connectStatus->setText("Server Open ERROR ");
         ui->consol->append("> Server Open ERROR : " + _server->errorString());
         ui->openServer->setText("Open");
-         disconnect(_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
+        disconnect(_server, SIGNAL(newConnection()), this, SLOT(onNewConnection()));
     }
 }
 
@@ -171,19 +169,13 @@ void MainWindow::onReadyRead()
             ui->consol->append("Stop GDB Server !");
             stopGDBserver();
         }
-
-
-
     }
 }
 
 void MainWindow::startGDBserver()
 {
-
-
     QString workdir = qApp->applicationDirPath();
-    QString appPath = ";" + qApp->applicationDirPath()
-                      + "\\Project\\st-link_GDB_server";
+    QString appPath = ";" + qApp->applicationDirPath() + "\\Project\\st-link_GDB_server";
     QString database = ";" + qApp->applicationDirPath()
                        + "\\Project\\st-link_GDB_server\\st-linkCli\\Data_Base";
     QString stlink = ";" + qApp->applicationDirPath()
@@ -207,10 +199,8 @@ void MainWindow::startGDBserver()
     process->kill();
     process->close();
 
-
     process->start("cmd /C ST-LINK_gdbserver.exe -p " + QString::number(mGDBserverPort)
                    + " -l 1 -d -s -cp .\\Project\\st-link_GDB_server\\st-linkCli\\bin -m 0 -k");
-
 }
 
 void MainWindow::stopGDBserver()
@@ -218,7 +208,16 @@ void MainWindow::stopGDBserver()
     process->terminate();
     process->kill();
     process->close();
-   QProcess::execute("Taskkill /IM ST-LINK_gdbserver.exe /F");
+    QProcess::execute("Taskkill /IM ST-LINK_gdbserver.exe /F");
+    mGeneralStatus.select.GDBserverStatus = 0;
+
+    ui->StlinkStatus->setText("GDB Not Started");
+    ui->StlinkStatus->setStyleSheet("QLabel {  color : red; }");
+
+    send_msg(_sockets[0],
+             _CMD_GENERAL_STATUS,
+             mGeneralStatus.byteArray,
+             sizeof(mGeneralStatus.byteArray));
 }
 
 void MainWindow::cmdTimerSlot()
@@ -277,6 +276,15 @@ void MainWindow::cmdTimerSlot()
                          mGeneralStatus.byteArray,
                          sizeof(mGeneralStatus.byteArray));
             }
+            if (temp.contains("Exit.") == true) {
+
+                ui->consol->append("> Startin GDB Server ..");
+                wait(1000);
+                startGDBserver();
+
+            }
+
+
 
             qDebug() << readdata.size();
             memset(mGDBCmd.byteArray, 0, sizeof(mGDBCmd.byteArray));
@@ -287,7 +295,6 @@ void MainWindow::cmdTimerSlot()
         }
     }
 }
-
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -303,11 +310,9 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::wait(int ms)
 {
+    QElapsedTimer timer;
+    timer.start();
 
-        QElapsedTimer timer;
-        timer.start();
-
-        while ( timer.elapsed() < ms )
-            QCoreApplication::processEvents();
-
+    while (timer.elapsed() < ms)
+        QCoreApplication::processEvents();
 }

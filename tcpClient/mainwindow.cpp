@@ -154,12 +154,15 @@ void MainWindow::clientRead()
         {
             ui->StlinkStatus->setText("Stlink Connected");
             ui->StlinkStatus->setStyleSheet("QLabel {  color : green; }");
+            ui->consol->append("> Stlink Connected !");
 
         }
         if (generalStatus.select.stlinkStatus == 0x00)
         {
             ui->StlinkStatus->setText("Stlink Not Found");
             ui->StlinkStatus->setStyleSheet("QLabel {  color : red; }");
+            ui->consol->append("> Stlink Not Found !");
+
 
         }
 
@@ -168,12 +171,15 @@ void MainWindow::clientRead()
             ui->GDBserverStatus->setText("GDB Server Started");
             ui->GDBserverStatus->setStyleSheet("QLabel {  color : green; }");
 
+            ui->consol->append("> Started GDB Server !");
+
 
         }
         if (generalStatus.select.GDBserverStatus == 0x00)
         {
             ui->GDBserverStatus->setText("GDB Not Started");
             ui->GDBserverStatus->setStyleSheet("QLabel {  color : red; }");
+            ui->consol->append("> Stoped GDB Server !");
 
         }
 
